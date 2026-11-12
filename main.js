@@ -263,8 +263,8 @@
 
     const setActive = (i) => {
       stages.forEach((s, k) => s.classList.toggle('is-active', k === i));
-      bands.forEach((b, k) => b.classList.toggle('is-on', k <= i));
-      labels.forEach((l, k) => l.classList.toggle('is-on', k === i));
+      bands.forEach((b) => b.classList.toggle('is-on', Number(b.dataset.band) <= i));
+      labels.forEach((l) => l.classList.toggle('is-on', Number(l.dataset.bandLabel) === i));
     };
     setActive(0);
 
