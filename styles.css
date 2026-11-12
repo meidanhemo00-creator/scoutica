@@ -1329,3 +1329,20 @@ button, input, textarea { font: inherit; color: inherit; }
   .stages { grid-column: 1; grid-row: 2; }
 }
 @media (max-width: 640px) { .pathway--m { width: 60px; height: auto; } .stage { padding-right: 72px; } }
+
+/* Experts section: centred composition, one expert area per centred line */
+.experts__inner { text-align: center; }
+.experts__title { margin-inline: auto; max-width: 16ch; }
+.experts__lead { margin-inline: auto; max-width: 36rem; }
+.experts__pick { justify-content: center; }
+.experts__board { margin-inline: auto; max-width: 880px; }
+.roster__row { grid-template-columns: 1fr; justify-items: center; text-align: center; row-gap: 6px; padding: clamp(16px, 2.2vw, 26px) 0; }
+.roster__n { order: 0; }
+.roster__t { order: 1; }
+.roster__s { min-width: 0; text-align: center; }
+.experts__read { margin-inline: auto; width: max-content; }
+.experts__note { text-align: center; }
+@media (max-width: 640px) {
+  .roster__row { grid-template-columns: 1fr; }
+  .roster__s { grid-column: 1; }
+}
