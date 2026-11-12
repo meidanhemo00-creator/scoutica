@@ -1382,3 +1382,17 @@ button, input, textarea { font: inherit; color: inherit; }
   .experts { background: var(--ink); }
   .experts__title span { display: inline; }
 }
+
+/* Phones: photographs in black and white. Blue duotone stays on desktop. */
+@media (max-width: 640px) {
+  .ph, .band__media, .experts__media, .hero__plate { background: #232326; }
+  .ph img, .band__media img, .experts__media img, .hero__plate img {
+    mix-blend-mode: normal;
+    filter: grayscale(1) contrast(1.08) brightness(0.9);
+  }
+  .hero__plate::after, .band__media::before, .experts__media::after {
+    background: linear-gradient(180deg, rgba(29, 29, 32, 0.55) 0%, rgba(29, 29, 32, 0.25) 45%, rgba(29, 29, 32, 0.9) 100%) !important;
+    mix-blend-mode: normal;
+  }
+  .hero__light, .band__lattice { display: none; }
+}
