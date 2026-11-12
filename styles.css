@@ -1346,3 +1346,8 @@ button, input, textarea { font: inherit; color: inherit; }
   .roster__row { grid-template-columns: 1fr; }
   .roster__s { grid-column: 1; }
 }
+
+/* Very narrow phones: keep the longest stage title on one line */
+@media (max-width: 360px) {
+  .stage__title { font-size: 2.2rem; }
+}
