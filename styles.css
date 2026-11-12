@@ -1364,3 +1364,21 @@ button, input, textarea { font: inherit; color: inherit; }
   .js .band.is-in .band__title span + span { transition-delay: 140ms; }
 }
 .no-wait .band__title span { opacity: 1 !important; transform: none !important; }
+
+/* Phones: calmer colour. Charcoal leads, blue stays as an accent, photos sit quieter behind the text */
+@media (max-width: 640px) {
+  .hero__plate img { filter: grayscale(1) contrast(1.05) brightness(0.8); opacity: 0.7; }
+  .hero__light { opacity: 0.35; }
+  .hero__scrim, .hero__media::after {
+    background: linear-gradient(180deg, rgba(29, 29, 32, 0.78) 0%, rgba(29, 29, 32, 0.6) 45%, rgba(29, 29, 32, 0.92) 100%) !important;
+  }
+  .experts__media { background: var(--ink); }
+  .experts__media img { opacity: 0.22; filter: grayscale(1) contrast(1.05) brightness(1.1); }
+  .experts__media::after {
+    background: linear-gradient(180deg, var(--ink) 0%, rgba(29, 29, 32, 0.85) 50%, var(--ink) 100%) !important;
+  }
+  .chip { background: rgba(29, 29, 32, 0.6); border-color: rgba(252, 249, 244, 0.35); }
+  .chip[aria-pressed="true"] { background: var(--paper); }
+  .experts { background: var(--ink); }
+  .experts__title span { display: inline; }
+}
