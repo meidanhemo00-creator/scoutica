@@ -644,7 +644,7 @@ button, input, textarea { font: inherit; color: inherit; }
   grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   column-gap: clamp(40px, 7vw, 120px);
 }
-.approach__sticky { position: sticky; top: calc(var(--nav-h) + 48px); }
+.approach__sticky { position: sticky; top: calc(var(--nav-h) + 28px); }
 .approach__sticky .display-2 { max-width: 11ch; }
 .approach__scope {
   margin-top: 28px;
@@ -654,16 +654,21 @@ button, input, textarea { font: inherit; color: inherit; }
   border-left: 2px solid var(--blue);
 }
 .pathway {
-  margin-top: clamp(40px, 6vh, 64px);
-  width: min(250px, 66%);
-  height: auto;
+  display: block;
+  margin-top: clamp(20px, 3.4vh, 44px);
+  /* sized by screen height so the whole S always fits next to the stages */
+  height: clamp(150px, 27vh, 250px);
+  width: auto;
+  max-width: 100%;
   overflow: visible;
 }
 /* The real S symbol, filled one quarter per stage */
 .pathway__base { fill: rgba(40, 40, 40, 0.1); }
-.pathway__fill { fill: var(--blue); opacity: 0; transition: opacity 520ms var(--ease-out); }
+.pathway__fill { fill: var(--blue); opacity: 0; transition: opacity 520ms var(--ease-out), fill 520ms ease; }
 .pathway__fill.is-on { opacity: 1; }
-.pathway__label { font-family: var(--mono); font-size: 8.5px; font-weight: 500; fill: #6A6762; transition: fill 300ms ease; }
+/* the quarter for the current stage is brighter, so it reads as lit */
+.pathway__fill.is-current { fill: #3445E0; }
+.pathway__label { font-family: var(--mono); font-size: 11px; font-weight: 500; fill: #6A6762; transition: fill 300ms ease; }
 .pathway__label.is-on { fill: var(--blue); }
 
 .stage {
@@ -1319,8 +1324,8 @@ button, input, textarea { font: inherit; color: inherit; }
     display: block; position: sticky; top: calc(var(--nav-h) + 16px); z-index: 3;
     height: 0; margin-top: 48px; overflow: visible; grid-column: 1; grid-row: 2;
   }
-  .pathway--m { position: absolute; right: 0; top: 0; width: 76px; margin: 0; }
+  .pathway--m { position: absolute; right: 0; top: 0; width: 76px; height: auto; margin: 0; }
   .stage { padding-right: 88px; }
   .stages { grid-column: 1; grid-row: 2; }
 }
-@media (max-width: 640px) { .pathway--m { width: 60px; } .stage { padding-right: 72px; } }
+@media (max-width: 640px) { .pathway--m { width: 60px; height: auto; } .stage { padding-right: 72px; } }
