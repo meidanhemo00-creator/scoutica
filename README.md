@@ -11,29 +11,22 @@ python3 -m http.server 8642
 
 Open http://127.0.0.1:8642. Any static host works (Netlify, Vercel, Cloudflare Pages, S3).
 
-## Contact form: configuration required
+## Contact form
 
-The form validates input but **does not send anything until an endpoint is configured**.
-With no endpoint, a valid submission shows: "Online enquiries are not connected yet, so this
-message has not been sent." The success message only appears after the endpoint returns a 2xx response.
+Enquiries are posted to [FormSubmit](https://formsubmit.co), which emails them to **stav@scoutica.io**
+(set in `data-endpoint` on the form in `index.html`). Success is only shown when FormSubmit confirms
+it accepted the message; otherwise the visitor sees an error and keeps what they typed.
 
-To enable sending, set `data-endpoint` on the form in `index.html`:
+**One-time activation:** the first real submission makes FormSubmit send a confirmation email to
+stav@scoutica.io. Click the link in it once; after that every enquiry arrives in that inbox. Until it is
+clicked, submissions will show the error message. Send one test enquiry from the live site right after launch.
 
-```html
-<form class="form" data-form data-endpoint="https://formspree.io/f/XXXXXXX" ...>
-```
+The endpoint address is visible in the page source (that is how static-site forms work). FormSubmit
+offers a random-token alias after activation if you would rather not show the address.
 
-The form POSTs `multipart/form-data` with fields `name`, `email`, `organization`, `message`
-and a honeypot `_gotcha`, using `Accept: application/json`. This works as-is with Formspree,
-Basin, Getform, or your own endpoint. Netlify Forms needs `data-netlify="true"` and `name`
-attributes instead.
-
-Still needed from Scoutica before launch:
-- The inbox or form service that should receive enquiries
-- Verified contact email and social profiles, if they should appear in the footer
-  (the business plan's Instagram handle is incomplete, so no social links are published)
-- An approved founder portrait, if one should be used (the section is designed to work without one)
-- Privacy policy, if the form will collect data in production
+Still needed before launch: verified social links for the footer, an approved founder portrait if wanted,
+a privacy policy, and Stav's paragraph on the technology units (placeholder copy is in the first row of
+"Access is the starting point").
 
 ## Brand decisions
 
@@ -49,14 +42,13 @@ This site uses the **brand board palette** only, because it is the documented fo
 The logo is rendered in ultramarine, charcoal, or warm white. Derived tints (all mixed from
 those four) are listed at the top of `styles.css`.
 
-**Type.** Host Grotesk (the face used in the wordmark and tagline) and JetBrains Mono (used for
-labels on the brand board), both open source (SIL OFL), loaded from Google Fonts. To self-host,
-download the woff2 files and replace the `<link>` in `index.html` with `@font-face` rules.
-The S symbol is drawn in Reisinger Amir. That font is not used for text, only through the outlined logo.
+**Type.** Satoshi (Indian Type Foundry, free for commercial use under the Fontshare license, loaded from
+fontshare.com) and JetBrains Mono (SIL OFL, used for labels as on the brand board). The wordmark and the S
+symbol are outlined artwork and do not depend on any font.
 
-## Hero photography
+## Photography
 
-Both images are free to use commercially under the [Unsplash License](https://unsplash.com/license) (checked: neither is an Unsplash+ image). No attribution is required, but credit is given here and in an HTML comment above the hero:
+Three images (the two hero frames and the wide band, Tel Aviv at night by Pierre Lemon, unsplash.com/photos/hdMH3QtnLv8) are free to use commercially under the [Unsplash License](https://unsplash.com/license) (checked: neither is an Unsplash+ image). No attribution is required, but credit is given here and in an HTML comment above the hero:
 
 - Tel Aviv: "Tel Aviv Sunset" by Joseph Barrientos, https://unsplash.com/photos/-HNvo9UG8ig
 - Miami: skyline by Michael Worden, https://unsplash.com/photos/TomHMvzU4jQ
@@ -76,8 +68,16 @@ brightest pixel behind it, in both crossfade states, on desktop and mobile.
   the supplied orientation: top bar to the right, notch on the left, bottom bar to the left.
   S figures are only translated or uniformly scaled, never mirrored or rotated.
 
+## Illustrations
+
+All illustrations are built from the real S symbol on a deep blue field: three value tiles, four stage tiles
+(a different crop of the S for each stage), the S that fills quarter by quarter beside the approach, and the
+expert review animation. No thin diagram lines or icon libraries.
+
 ## Motion
 
+- Expert review: experts around a central S light up one by one, each sends an initial read to the centre,
+  and the cycle ends with a check. Static (all lit, with the check) under reduced motion.
 - Hero: images fade in once decoded; a 26s crossfade (Tel Aviv, then Miami) with the route
   labels in sync; slow drift and a moving blue light on a 52s cycle; the signature S gathers
   from its grid cells once on load.

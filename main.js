@@ -262,28 +262,18 @@
   }
 
   /* ------------------------------------------------------------------
-     3. Approach: the pathway follows the stage in view
+     3. Approach: the S symbol fills one quarter per stage
      ------------------------------------------------------------------ */
   const approach = document.querySelector('[data-approach]');
   if (approach && 'IntersectionObserver' in window) {
     const stages = [...approach.querySelectorAll('[data-stage]')];
-    const progress = approach.querySelector('[data-pathway-progress]');
-    const nodes = [...approach.querySelectorAll('[data-node]')];
-    const last = stages.length - 1;
-    const track = approach.querySelector('[data-pathway-track]');
-    if (track && track.getTotalLength) {
-      const len = track.getTotalLength();
-      nodes.forEach((n, k) => {
-        const p = track.getPointAtLength((len * k) / last);
-        n.setAttribute('x', (p.x - 10).toFixed(1));
-        n.setAttribute('y', (p.y - 10).toFixed(1));
-      });
-    }
+    const bands = [...approach.querySelectorAll('[data-band]')];
+    const labels = [...approach.querySelectorAll('[data-band-label]')];
 
     const setActive = (i) => {
       stages.forEach((s, k) => s.classList.toggle('is-active', k === i));
-      nodes.forEach((n, k) => n.classList.toggle('is-reached', k <= i));
-      if (progress) progress.style.setProperty('--progress-offset', String(1 - i / last));
+      bands.forEach((b, k) => b.classList.toggle('is-on', k <= i));
+      labels.forEach((l, k) => l.classList.toggle('is-on', k === i));
     };
     setActive(0);
 
@@ -294,6 +284,17 @@
     }, { rootMargin: '-48% 0px -48% 0px' });
     stages.forEach((s) => io.observe(s));
   }
+
+  /* ------------------------------------------------------------------
+     Experience frames: title at rest, full paragraph on click
+     ------------------------------------------------------------------ */
+  document.querySelectorAll('.frame__btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      btn.closest('.frame').classList.toggle('is-open', open);
+    });
+  });
 
   /* ------------------------------------------------------------------
      Nav: mark the section in view
@@ -422,6 +423,8 @@
           body: new FormData(f),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json().catch(() => ({}));
+        if (data.success === false || data.success === 'false') throw new Error(data.message || 'Not accepted');
         f.reset();
         attempted = false;
         setStatus('success', 'Thank you. Your message has been sent, and we will reply by email.');
