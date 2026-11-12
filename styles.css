@@ -1351,3 +1351,16 @@ button, input, textarea { font: inherit; color: inherit; }
 @media (max-width: 360px) {
   .stage__title { font-size: 2.2rem; }
 }
+
+/* Experts: a single rule fills as each area is read */
+.experts__board { position: relative; }
+.experts__board::before { content: ""; position: absolute; left: 0; top: -14px; height: 1px; width: 100%; background: rgba(252, 249, 244, 0.22); }
+.experts__board::after { content: ""; position: absolute; left: 0; top: -15px; height: 3px; width: calc(var(--p, 0) * 100%); background: var(--paper); border-radius: 2px; transition: width 900ms var(--ease-out); }
+
+/* Band: the two headline lines rise in once, as the band comes into view */
+@media (prefers-reduced-motion: no-preference) {
+  .js .band__title span { opacity: 0; transform: translateY(22px); transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out); }
+  .js .band.is-in .band__title span { opacity: 1; transform: none; }
+  .js .band.is-in .band__title span + span { transition-delay: 140ms; }
+}
+.no-wait .band__title span { opacity: 1 !important; transform: none !important; }

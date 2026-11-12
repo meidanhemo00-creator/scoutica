@@ -198,6 +198,11 @@
     activate(0);
   }
 
+  const band = document.querySelector('.band');
+  if (band && 'IntersectionObserver' in window && !reduceMotion.matches) {
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) { band.classList.add('is-in'); } }, { threshold: 0.3 }).observe(band);
+  }
+
   /* ------------------------------------------------------------------
      Experts board: experts check in one by one, then the initial read is ready
      ------------------------------------------------------------------ */
@@ -212,12 +217,19 @@
     let current = 'defense';
     let visible = false;
 
+    const board = root.querySelector('.experts__board');
+    const progress = () => {
+      const all = rows();
+      const done = all.filter((r) => r.classList.contains('is-sent')).length;
+      board.style.setProperty('--p', String(all.length ? done / all.length : 0));
+    };
     const clear = () => { timers.forEach(clearTimeout); timers = []; };
     const rows = () => [...rosters.find((r) => r.dataset.roster === current).querySelectorAll('.roster__row')];
     const setState = (row, state, text) => {
       row.classList.remove('is-wait', 'is-live', 'is-sent');
       if (state) row.classList.add(state);
       row.querySelector('.roster__s').textContent = text;
+      if (typeof progress === 'function' && board) progress();
     };
     const showAll = () => { rows().forEach((r) => setState(r, 'is-sent', 'Read sent')); read.classList.add('is-shown'); };
 
