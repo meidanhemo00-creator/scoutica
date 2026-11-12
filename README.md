@@ -48,10 +48,17 @@ symbol are outlined artwork and do not depend on any font.
 
 ## Photography
 
-Three images (the two hero frames and the wide band, Tel Aviv at night by Pierre Lemon, unsplash.com/photos/hdMH3QtnLv8) are free to use commercially under the [Unsplash License](https://unsplash.com/license) (checked: neither is an Unsplash+ image). No attribution is required, but credit is given here and in an HTML comment above the hero:
+Nine images (hero x2, wide band, experts background, value, three sectors, deliverables) are free to use commercially under the [Unsplash License](https://unsplash.com/license) (checked: neither is an Unsplash+ image). No attribution is required, but credit is given here and in an HTML comment above the hero:
 
-- Tel Aviv: "Tel Aviv Sunset" by Joseph Barrientos, https://unsplash.com/photos/-HNvo9UG8ig
-- Miami: skyline by Michael Worden, https://unsplash.com/photos/TomHMvzU4jQ
+- Hero, Tel Aviv: "Tel Aviv Sunset" by Joseph Barrientos, unsplash.com/photos/-HNvo9UG8ig
+- Hero, Miami: Michael Worden, unsplash.com/photos/TomHMvzU4jQ
+- Wide band: Tel Aviv at night, Pierre Lemon, unsplash.com/photos/hdMH3QtnLv8
+- Experts background: Tel Aviv at night, Micah Camper, unsplash.com/photos/UBXRAbaBNGQ
+- Value section: Tel Aviv towers, Micah Camper, unsplash.com/photos/7QUOmEqNF9s
+- Defense: radio telescope, Svetogor Maliugin, unsplash.com/photos/QZKrCqDzCC0
+- Cybersecurity: server hall, Paul Hanaoka, unsplash.com/photos/s0XabTAKvak
+- AI: glass tower, Micah Camper, unsplash.com/photos/D23kkiPBwWY
+- Deliverables: building, Daniel, unsplash.com/photos/Xj-MnOm0vWw
 
 They are served from Unsplash's image CDN (`images.unsplash.com`), with responsive `srcset`,
 automatic WebP/AVIF, and a portrait crop for phones. To self-host instead, download them
@@ -68,16 +75,16 @@ brightest pixel behind it, in both crossfade states, on desktop and mobile.
   the supplied orientation: top bar to the right, notch on the left, bottom bar to the left.
   S figures are only translated or uniformly scaled, never mirrored or rotated.
 
-## Illustrations
+## Graphics
 
-All illustrations are built from the real S symbol on a deep blue field: three value tiles, four stage tiles
-(a different crop of the S for each stage), the S that fills quarter by quarter beside the approach, and the
-expert review animation. No thin diagram lines or icon libraries.
+The page uses real photography in brand blue plus one S: the logo, the signature S above the hero headline,
+and the S beside "Your thesis sets the direction" that fills one quarter per stage. There are no
+diagram-style illustrations or repeated small S marks.
 
 ## Motion
 
-- Expert review: experts around a central S light up one by one, each sends an initial read to the centre,
-  and the cycle ends with a check. Static (all lit, with the check) under reduced motion.
+- Experts board: pick a company type; its expert areas check in one by one (Waiting, Reviewing, Read sent) and
+  an "Initial read ready" note appears. The areas are illustrative. Reduced motion shows the finished state.
 - Hero: images fade in once decoded; a 26s crossfade (Tel Aviv, then Miami) with the route
   labels in sync; slow drift and a moving blue light on a 52s cycle; the signature S gathers
   from its grid cells once on load.

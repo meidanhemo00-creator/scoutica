@@ -169,79 +169,17 @@
   if (sectorsRoot) buildSectors(sectorsRoot);
 
   function buildSectors(root) {
-    const grid = root.querySelector('[data-sector-grid]');
     const sectors = [...root.querySelectorAll('[data-sector]')];
     const buttons = sectors.map((s) => s.querySelector('.sector__btn'));
-
-    const C = 24;
-    const COLS = 12;
-    const ROWS = 10;
-    const PAD = 1.5;
-    const cells = [];
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const rect = el('rect', {
-          class: 'cell',
-          x: c * C + PAD, y: r * C + PAD,
-          width: C - PAD * 2, height: C - PAD * 2, rx: 3,
-          'data-state': 'off',
-        });
-        rect.style.transitionDelay = `${(c + r) * 16}ms`;
-        grid.appendChild(rect);
-        cells.push({ rect, c, r });
-      }
-    }
-
-    const span = (set, r, c0, c1) => { for (let c = c0; c <= c1; c++) set.add(`${c},${r}`); };
-
-    // Each pattern is a different arrangement of the same lattice.
-    const patterns = {
-      // Layers: the three bars of the S as solid layers, its two notches as joints.
-      // Built from the same S grid as the logo, so the orientation always matches.
-      defense() {
-        return { on: sCells(2, 0, [0, 2, 4]), mid: sCells(2, 0, [1, 3]) };
-      },
-      // Perimeter: a stepped enclosure around a structured interior
-      cyber() {
-        const on = new Set(); const mid = new Set();
-        for (let c = 2; c <= 9; c++) { on.add(`${c},1`); on.add(`${c},8`); }
-        for (let r = 1; r <= 8; r++) { on.add(`2,${r}`); on.add(`9,${r}`); }
-        on.delete('9,4'); on.delete('9,5');
-        on.add('10,4'); on.add('10,5');
-        for (let r = 3; r <= 6; r++) for (let c = 4; c <= 7; c++) if ((r + c) % 2 === 0) mid.add(`${c},${r}`);
-        return { on, mid };
-      },
-      // Pathways: connected nodes along a stepped route
-      ai() {
-        const on = new Set(); const mid = new Set();
-        const nodes = [[1, 8], [4, 8], [4, 5], [7, 5], [7, 2], [10, 2]];
-        nodes.forEach(([c, r]) => on.add(`${c},${r}`));
-        span(mid, 8, 2, 3);
-        [6, 7].forEach((r) => mid.add(`4,${r}`));
-        span(mid, 5, 5, 6);
-        [3, 4].forEach((r) => mid.add(`7,${r}`));
-        span(mid, 2, 8, 9);
-        ['1,1', '2,4', '10,6', '9,8', '5,1', '11,4'].forEach((k) => mid.add(k));
-        return { on, mid };
-      },
-    };
-
-    const paint = (key) => {
-      const { on, mid } = patterns[key]();
-      cells.forEach(({ rect, c, r }) => {
-        const k = `${c},${r}`;
-        rect.setAttribute('data-state', on.has(k) ? 'on' : mid.has(k) ? 'mid' : 'off');
-      });
-    };
+    const photos = [...root.querySelectorAll('[data-photo]')];
 
     const activate = (index, focus = false) => {
       sectors.forEach((s, i) => {
         const open = i === index;
         buttons[i].setAttribute('aria-expanded', String(open));
         s.querySelector('.sector__panel').hidden = !open;
-        s.classList.toggle('is-active', open);
       });
-      paint(sectors[index].dataset.sector);
+      photos.forEach((p) => p.classList.toggle('is-active', p.dataset.photo === sectors[index].dataset.sector));
       if (focus) buttons[index].focus();
     };
 
@@ -257,8 +195,61 @@
         if (next !== null) { e.preventDefault(); buttons[next].focus(); }
       });
     });
-
     activate(0);
+  }
+
+  /* ------------------------------------------------------------------
+     Experts board: experts check in one by one, then the initial read is ready
+     ------------------------------------------------------------------ */
+  const expertsRoot = document.querySelector('[data-experts]');
+  if (expertsRoot) buildExperts(expertsRoot);
+
+  function buildExperts(root) {
+    const chips = [...root.querySelectorAll('[data-pick]')];
+    const rosters = [...root.querySelectorAll('[data-roster]')];
+    const read = root.querySelector('[data-read]');
+    let timers = [];
+    let current = 'defense';
+    let visible = false;
+
+    const clear = () => { timers.forEach(clearTimeout); timers = []; };
+    const rows = () => [...rosters.find((r) => r.dataset.roster === current).querySelectorAll('.roster__row')];
+    const setState = (row, state, text) => {
+      row.classList.remove('is-wait', 'is-live', 'is-sent');
+      if (state) row.classList.add(state);
+      row.querySelector('.roster__s').textContent = text;
+    };
+    const showAll = () => { rows().forEach((r) => setState(r, 'is-sent', 'Read sent')); read.classList.add('is-shown'); };
+
+    const run = () => {
+      clear();
+      if (reduceMotion.matches) { showAll(); return; }
+      read.classList.remove('is-shown');
+      rows().forEach((r) => setState(r, 'is-wait', 'Waiting'));
+      rows().forEach((r, i) => {
+        timers.push(setTimeout(() => setState(r, 'is-live', 'Reviewing'), 500 + i * 1500));
+        timers.push(setTimeout(() => setState(r, 'is-sent', 'Read sent'), 500 + i * 1500 + 1000));
+      });
+      const end = 500 + rows().length * 1500 + 500;
+      timers.push(setTimeout(() => read.classList.add('is-shown'), end));
+      timers.push(setTimeout(run, end + 6000));
+    };
+
+    const pick = (key) => {
+      current = key;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.pick === key)));
+      rosters.forEach((r) => { r.hidden = r.dataset.roster !== key; });
+      if (visible) run(); else showAll();
+    };
+    chips.forEach((c) => c.addEventListener('click', () => pick(c.dataset.pick)));
+
+    showAll();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting;
+        if (visible) run(); else { clear(); showAll(); }
+      }, { threshold: 0.35 }).observe(root);
+    }
   }
 
   /* ------------------------------------------------------------------
