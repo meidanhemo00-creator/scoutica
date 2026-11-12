@@ -1296,3 +1296,10 @@ button, input, textarea { font: inherit; color: inherit; }
 .sectors__img[data-photo="cyber"] img { filter: grayscale(1) contrast(1.05) brightness(2.6); }
 .sectors__img[data-photo="ai"] img { filter: grayscale(1) contrast(1.1) brightness(1.5); }
 .experts__media img { filter: grayscale(1) contrast(1.1) brightness(1.7); }
+
+
+/* Safety net (see the inline script in index.html): show everything if scripts stall or fail */
+.no-wait .hero__media { opacity: 1 !important; }
+.no-wait .hero__plate img { transform: none; }
+.no-wait [data-reveal] { opacity: 1 !important; transform: none !important; }
+.no-wait .value__thread { transform: none !important; }
